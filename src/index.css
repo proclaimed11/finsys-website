@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #111111;
+  background-color: #ffffff;
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-rgb: 255, 255, 255;
+  --bg-accent: rgba(92, 184, 42, 0.12);
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-strong: #ffffff;
+  --text: #111111;
+  --muted: #555555;
+  --muted-soft: #666666;
+  --border: rgba(17, 17, 17, 0.08);
+  --shadow: 0 16px 40px rgba(17, 17, 17, 0.08);
+  --accent: #5cb82a;
+  --accent-strong: #3f8f1f;
+  --major-heading-size: clamp(1.6rem, 2.15vw, 2rem);
+  --major-heading-line-height: 1.15;
+  --major-heading-letter-spacing: -0.02em;
+  --page-content-bg: var(--bg);
+  --page-content-bg-rgb: var(--bg-rgb);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #020617;
+  --bg-rgb: 2, 6, 23;
+  --bg-accent: rgba(92, 184, 42, 0.16);
+  --surface: rgba(9, 14, 31, 0.95);
+  --surface-strong: #0f172a;
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+  --muted-soft: #e2e8f0;
+  --border: rgba(255, 255, 255, 0.14);
+  --shadow: 0 20px 50px rgba(2, 8, 23, 0.45);
+  --accent: #5cb82a;
+  --accent-strong: #3f8f1f;
+  --page-content-bg: var(--bg);
+  --page-content-bg-rgb: var(--bg-rgb);
+  --hero-card-bg: linear-gradient(145deg, #081120, #0f172a);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
