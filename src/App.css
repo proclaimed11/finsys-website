@@ -414,6 +414,16 @@ section[id] {
   .home-pillar-slide.is-active > img {
     animation: none;
   }
+
+  .home-pillar-slide-content > * {
+    transition: none;
+  }
+
+  .home-pillar-slide.is-active .home-pillar-slide-content > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .home-pillar-slide::after {
@@ -442,6 +452,75 @@ section[id] {
   text-align: left;
   color: #ffffff;
   transform: translateX(-50%);
+}
+
+.home-pillar-slide-content {
+  opacity: 0;
+  translate: 0 28px;
+  transition: opacity 0.45s ease, translate 0.45s ease;
+}
+
+.home-pillar-slide.is-active .home-pillar-slide-content {
+  animation: homePillarContentReveal 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-pillar-slide-content > * {
+  opacity: 0;
+  translate: 0 24px;
+  transition: opacity 0.45s ease, translate 0.45s ease;
+}
+
+.home-pillar-slide.is-active .home-pillar-slide-content > * {
+  animation: homePillarContentReveal 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-pillar-slide.is-active .home-pillar-slide-content > .home-pillar-eyebrow {
+  animation-delay: 80ms;
+}
+
+.home-pillar-slide.is-active .home-pillar-slide-content > h1 {
+  animation-delay: 200ms;
+}
+
+.home-pillar-slide.is-active .home-pillar-slide-content > p:not(.home-pillar-eyebrow) {
+  animation-delay: 320ms;
+}
+
+.home-pillar-slide.is-active .home-pillar-actions > a {
+  animation: homePillarContentReveal 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-pillar-slide.is-active .home-pillar-actions > a:first-child {
+  animation-delay: 440ms;
+}
+
+.home-pillar-slide.is-active .home-pillar-actions > a:last-child {
+  animation-delay: 540ms;
+}
+
+@keyframes homePillarContentReveal {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-pillar-slide-content,
+  .home-pillar-slide.is-active .home-pillar-slide-content,
+  .home-pillar-slide-content > :not(.home-pillar-actions),
+  .home-pillar-actions > a,
+  .home-pillar-slide.is-active .home-pillar-slide-content > *,
+  .home-pillar-slide.is-active .home-pillar-actions > a {
+    animation: none;
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
 }
 
 .home-pillar-slide-content h2 {
