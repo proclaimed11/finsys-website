@@ -305,13 +305,15 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
       setMenuOpen(false)
       return
     }
+    setMenuOpen(false)
+    setServicesOpen(false)
+    setMobileServicesOpen(false)
     setTransitionPhase('covering')
     window.setTimeout(() => {
       window.history.pushState({}, '', hash ? `${path}#${hash}` : path)
       setCurrentPath(path)
       if (hash) setPendingHashTarget(hash)
       setTransitionPhase('revealing')
-      setMenuOpen(false)
       window.setTimeout(() => setTransitionPhase('idle'), ROUTE_REVEAL_MS)
     }, ROUTE_COVER_MS)
   }
