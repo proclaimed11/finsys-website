@@ -380,12 +380,12 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
         </main>
         </div>
       <div className="page-content-over-hero">
-      <section className="hero-strip-band">
-        <p className="hero-strip-text">
+        <section className="hero-strip-band" data-reveal-group>
+          <p className="hero-strip-text reveal-up">
           A Tanzanian-led ICT consultancy bringing together enterprise technology, financial services systems and implementation assurance
         </p>
         <a         
-          className="hero-strip-cta"
+            className="hero-strip-cta reveal-up"
           href="/about"
           onClick={(event) => onServiceNavigate(event, '/about')}
         >
@@ -400,17 +400,17 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
         </div>
 
         <div className="strategic-solutions-inner">
-          <header className="strategic-solutions-header">
-            <p className="section-label">Technology built around your priorities</p>
-            <h2 className="strategic-solutions-title">Solutions & Services</h2>
-            <p className="strategic-solutions-copy">
+          <header className="strategic-solutions-header" data-reveal-group>
+            <p className="section-label reveal-up">Technology built around your priorities</p>
+            <h2 className="strategic-solutions-title reveal-up">Solutions & Services</h2>
+            <p className="strategic-solutions-copy reveal-up">
               From core banking and cybersecurity to cloud and infrastructure, we help organisations plan, implement and support technology that matters.
             </p>
           </header>
 
-          <nav className="solutions-nav-row" aria-label="Core solutions">
+          <nav className="solutions-nav-row" aria-label="Core solutions" data-reveal-group>
             {solutions.map((solution) => (
-              <div key={solution.title} className="solution-nav-item">
+              <div key={solution.title} className="solution-nav-item reveal-up">
                 <a
                   href={solution.path}
                   className="solution-nav-card"
@@ -430,22 +430,22 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
       </section>
 
       <section className="why-choose-section" id="why-choose">
-        <div className="section-heading">
-          <p className="section-eyebrow">Focused delivery for high-impact systems</p>
-          <h2>
+        <div className="section-heading" data-reveal-group>
+          <p className="section-eyebrow reveal-up">Focused delivery for high-impact systems</p>
+          <h2 className="reveal-up">
             Why Choose <span className="why-choose-brand">Finsys?</span>
           </h2>
         </div>
 
         <div className="why-choose-card">
           <div className="why-choose-layout">
-          <div className="why-choose-content">
-            <h3 className="why-choose-lead">
+          <div className="why-choose-content" data-reveal-group>
+            <h3 className="why-choose-lead reveal-up">
               One strong solution,
               <br />
               <span className="why-choose-lead-accent">defined outcomes</span>
             </h3>
-            <p className="why-choose-intro">
+            <p className="why-choose-intro reveal-up">
               We bring banking, technology and local execution together so every solution is practical, secure and delivery-focused.
             </p>
 
@@ -454,7 +454,7 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
                 const Icon = point.icon
 
                 return (
-                  <article key={point.title} className="why-choose-point">
+                  <article key={point.title} className="why-choose-point reveal-up">
                     <div className="why-choose-point-icon" aria-hidden="true">
                       <Icon size={20} strokeWidth={1.75} />
                     </div>
@@ -468,11 +468,11 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
             </div>
           </div>
 
-          <div className="why-choose-visual-stack">
-            <div className="why-choose-visual-primary">
+          <div className="why-choose-visual-stack" data-reveal-group>
+            <div className="why-choose-visual-primary reveal-up">
               <img src={whyChoosePrimaryImage} alt="Finsys delivery team in action" />
             </div>
-            <div className="why-choose-visual-secondary">
+            <div className="why-choose-visual-secondary reveal-up">
               <img src={whyChooseSecondaryImage} alt="Finsys infrastructure operations" />
             </div>
           </div>
@@ -540,18 +540,18 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
     </section> */}
 
     <section className="clients-carousel-section" id="track-record">
-        <div className="section-heading">
-          <p className="section-label clients-carousel-eyebrow">Our Clients & Partners</p>
-          <h2>
+        <div className="section-heading" data-reveal-group>
+          <p className="section-label clients-carousel-eyebrow reveal-up">Our Clients & Partners</p>
+          <h2 className="reveal-up">
           Our valued clientele across <span className="track-record-accent">East Africa</span>
           </h2>
-          <p className="section-copy">
+          <p className="section-copy reveal-up">
             We have had the privilege of working with banks, financial institutions, government agencies
             and private sector organisations, delivering reliable technology solutions and lasting value.
           </p>
         </div>
 
-        <div className="clients-carousel">
+        <div className="clients-carousel reveal-up">
           <button
             type="button"
             className="clients-carousel-arrow clients-carousel-arrow--previous"
@@ -593,15 +593,15 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
       </section>
 
       <section className="content-section stacked-section service-cta-section">
-        <div className="service-cta-card">
-          <div>
+        <div className="service-cta-card" data-reveal-group>
+          <div className="reveal-up">
             <p className="section-label">Contact Us</p>
             <h3>Explore our services and get in touch today.</h3>
             <p className="section-copy">
               Speak with our team about tailored solutions, secure infrastructure, and business-ready ICT delivery.
             </p>
           </div>
-          <div className="service-cta-actions">
+          <div className="service-cta-actions reveal-up">
             <a className="primary-btn" href="/contact">
               Contact Us
             </a>

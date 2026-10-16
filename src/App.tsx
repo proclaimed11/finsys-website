@@ -84,6 +84,14 @@ const footerSocialLinks = [
   ) },
 ]
 
+const scrollToTopImmediately = () => {
+  const root = document.documentElement
+  const previousScrollBehavior = root.style.scrollBehavior
+  root.style.scrollBehavior = 'auto'
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  root.style.scrollBehavior = previousScrollBehavior
+}
+
 function App() {
     //============== [my edit 1]
   useGlobalReveal()
@@ -176,6 +184,9 @@ function App() {
 
   useEffect(() => {
     const handlePopState = () => {
+      if (!(window.location.pathname === '/' && window.location.hash)) {
+        scrollToTopImmediately()
+      }
       setCurrentPath(window.location.pathname)
       if (window.location.pathname === '/' && window.location.hash) {
         setPendingHashTarget(window.location.hash.slice(1))
@@ -189,7 +200,7 @@ function App() {
   useEffect(() => {
     if (previousPathRef.current !== currentPath) {
       if (!(currentPath === '/' && pendingHashTarget)) {
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+        scrollToTopImmediately()
       }
       previousPathRef.current = currentPath
     }
@@ -310,6 +321,9 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
     setMobileServicesOpen(false)
     setTransitionPhase('covering')
     window.setTimeout(() => {
+      if (!(path === '/' && hash)) {
+        scrollToTopImmediately()
+      }
       window.history.pushState({}, '', hash ? `${path}#${hash}` : path)
       setCurrentPath(path)
       if (hash) setPendingHashTarget(hash)
@@ -337,7 +351,7 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
   }
 
   return (
-    <div className="page-shell">
+    <div className="page-shell" data-route-transitioning={transitionPhase !== 'idle'}>
       {/*=============== my addition loader */}
       <div
         className={`route-transition-overlay${transitionPhase === 'covering' ? ' active' : ''}${transitionPhase === 'revealing' ? ' revealing' : ''}`}

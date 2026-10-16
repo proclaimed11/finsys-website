@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 
 /**
  * Call this ONCE, at the top-level App component.
- * It watches the whole document for any element with
- * class "reveal-up" and reveals it (with optional stagger
- * via data-reveal-group) when it scrolls into view.
+ * It watches elements with class "reveal-up" and reveals
+ * them (with optional stagger via data-reveal-group) when
+ * they scroll into view. Non-home page content sections
+ * are registered automatically.
  *
  * Also re-scans automatically when the DOM changes (route
  * changes, dynamic content, etc.) via a MutationObserver.
@@ -18,6 +19,10 @@ export function useGlobalReveal() {
 
     const io = new IntersectionObserver(
       (entries) => {
+        if (document.querySelector('.page-shell')?.getAttribute('data-route-transitioning') === 'true') {
+          return
+        }
+
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const el = entry.target as HTMLElement
@@ -36,18 +41,54 @@ export function useGlobalReveal() {
     )
 
     const observeAll = () => {
-      document.querySelectorAll('.reveal-up:not(.is-visible)').forEach((el) => io.observe(el))
+      if (document.querySelector('.page-shell')?.getAttribute('data-route-transitioning') === 'true') {
+        return
+      }
+
+      const isHomePage = document.querySelector('.hero-section--carousel-only') !== null
+      if (!isHomePage) {
+        document
+          .querySelectorAll('.page-content-over-hero > section:not(.reveal-up)')
+          .forEach((el) => el.classList.add('reveal-up'))
+      }
+
+      document.querySelectorAll<HTMLElement>('.reveal-up:not(.is-visible)').forEach((el) => {
+        const bounds = el.getBoundingClientRect()
+        const isAlreadyInView = bounds.top < window.innerHeight && bounds.bottom > 0
+
+        if (isAlreadyInView) {
+          el.classList.add('is-visible')
+          return
+        }
+
+        io.observe(el)
+      })
     }
 
-    observeAll()
+    let observationFrame = 0
+    const scheduleObserveAll = () => {
+      window.cancelAnimationFrame(observationFrame)
+      observationFrame = window.requestAnimationFrame(() => {
+        observationFrame = window.requestAnimationFrame(observeAll)
+      })
+    }
 
     // Re-scan when new nodes get added (route change, lazy content, etc.)
-    const mo = new MutationObserver(() => observeAll())
+    const mo = new MutationObserver(scheduleObserveAll)
     mo.observe(document.body, { childList: true, subtree: true })
+    const pageShell = document.querySelector('.page-shell')
+    if (pageShell) {
+      mo.observe(pageShell, {
+        attributes: true,
+        attributeFilter: ['data-route-transitioning'],
+      })
+    }
+    scheduleObserveAll()
 
     return () => {
       io.disconnect()
       mo.disconnect()
+      window.cancelAnimationFrame(observationFrame)
     }
   }, [])
 }
