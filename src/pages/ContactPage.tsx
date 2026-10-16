@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react'
+import { useState, type FormEvent, type MouseEvent } from 'react'
 import {
   MapPin,
   Mail,
@@ -70,6 +70,47 @@ const socialLinks = [
 ]
 
 function ContactPage({ onNavigateHome }: ContactPageProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submissionMessage, setSubmissionMessage] = useState('')
+  const [submissionFailed, setSubmissionFailed] = useState(false)
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setIsSubmitting(true)
+    setSubmissionMessage('')
+    setSubmissionFailed(false)
+
+    try {
+      const form = event.currentTarget
+      const formData = new FormData(form)
+      const response = await fetch('https://formsubmit.co/ajax/pascal@finsys-tech.co.tz', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(Object.fromEntries(formData.entries())),
+      })
+
+      const result: unknown = await response.json()
+      if (!response.ok || !isSuccessfulFormSubmitResponse(result)) {
+        throw new Error(getFormSubmitErrorMessage(result))
+      }
+
+      form.reset()
+      setSubmissionMessage('Email sent successfully. Thank you for contacting us.')
+    } catch (error) {
+      setSubmissionFailed(true)
+      setSubmissionMessage(
+        error instanceof Error
+          ? `We couldn't send your message. ${error.message}`
+          : "We couldn't send your message. Please try again.",
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <main className="contact-page">
       <section 
@@ -151,32 +192,50 @@ function ContactPage({ onNavigateHome }: ContactPageProps) {
           </div>
 
           <div className="contact-form-panel">
-            <form className="contact-form">
+            <form
+              className="contact-form"
+              action="https://formsubmit.co/ajax/pascal@finsys-tech.co.tz"
+              method="POST"
+              onSubmit={handleSubmit}
+            >
+              <input type="hidden" name="_subject" value="client query" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_template" value="table" />
+
               <div className="contact-form-row">
                 <label>
-                  <span>Email</span>
-                  <input type="email" placeholder="you@example.com" />
+                  <span>Name</span>
+                  <input type="text" name="name" placeholder="Your name" required />
                 </label>
                 <label>
-                  <span>Name</span>
-                  <input type="text" placeholder="Your name" />
+                  <span>Email</span>
+                  <input type="email" name="email" placeholder="you@example.com" required />
                 </label>
               </div>
 
               <label>
                 <span>Phone</span>
-                <input type="tel" placeholder="+255 ..." />
+                <input type="tel" name="phone" placeholder="+255 ..." />
               </label>
 
               <label>
                 <span>Message</span>
-                <textarea rows={6} placeholder="Tell us what you need"></textarea>
+                <textarea name="message" rows={6} placeholder="Tell us what you need" required />
               </label>
 
-              <button className="contact-submit" type="submit">
+              <button className="contact-submit" type="submit" disabled={isSubmitting}>
                 <Send size={18} />
-                Submit Message
+                {isSubmitting ? 'Sending…' : 'Submit Message'}
               </button>
+              {submissionMessage && (
+                <p
+                  className={`contact-form-notice${submissionFailed ? ' is-error' : ''}`}
+                  role={submissionFailed ? 'alert' : 'status'}
+                  aria-live={submissionFailed ? 'assertive' : 'polite'}
+                >
+                  {submissionMessage}
+                </p>
+              )}
             </form>
           </div>
         </div>
@@ -192,7 +251,7 @@ function ContactPage({ onNavigateHome }: ContactPageProps) {
 
           <iframe
             title="Finsys location map"
-            src="https://www.google.com/maps?q=Dar%20es%20Salaam%2C%20Tanzania&output=embed"
+            src="https://www.google.com/maps?q=-6.7766388,39.2433916&z=17&output=embed"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
@@ -201,6 +260,29 @@ function ContactPage({ onNavigateHome }: ContactPageProps) {
       </div>
     </main>
   )
+}
+
+function isSuccessfulFormSubmitResponse(
+  response: unknown,
+): response is { success: boolean | string; message?: string } {
+  if (typeof response !== 'object' || response === null || !('success' in response)) {
+    return false
+  }
+
+  return response.success === true || response.success === 'true'
+}
+
+function getFormSubmitErrorMessage(response: unknown): string {
+  if (
+    typeof response === 'object' &&
+    response !== null &&
+    'message' in response &&
+    typeof response.message === 'string'
+  ) {
+    return response.message
+  }
+
+  return 'Please try again later.'
 }
 
 export default ContactPage
