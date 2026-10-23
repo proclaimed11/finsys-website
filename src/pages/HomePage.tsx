@@ -28,6 +28,7 @@ import tpcLogo from '../assets/images/home/TPC-logo.png'
 import tasacLogo from '../assets/images/home/TASAC-logo.png'
 import nccLogo from '../assets/images/home/NCC-logo.png'
 import ttclLogo from '../assets/images/home/TTCL-logo.png'
+import taaLogo from '../assets/images/home/TAA-logo.png'
 
 interface HomePageProps {
   theme: 'light' | 'dark'
@@ -159,6 +160,13 @@ const clientLogos = [
   { src: tasacLogo, name: 'TASAC' },
   { src: nccLogo, name: 'National Consumer Council' },
   { src: ttclLogo, name: 'TTCL' },
+  { src: taaLogo, name: 'Tanzania Airports Authority' },
+]
+
+const carouselClientLogos = [
+  clientLogos[clientLogos.length - 1],
+  ...clientLogos,
+  clientLogos[0],
 ]
 
 function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
@@ -229,14 +237,23 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
   const activeClientIndexRef = useRef(0)
   const isClientHoveredRef = useRef(false)
 
-  const scrollClientsToIndex = (index: number) => {
+  const scrollClientsToIndex = (index: number, behavior: ScrollBehavior = 'smooth') => {
     const track = clientTrackRef.current
     if (!track) return
     const cards = track.querySelectorAll<HTMLElement>('.client-logo-card')
-    const card = cards[index]
+    const normalizedIndex = (index + clientLogos.length) % clientLogos.length
+    const currentIndex = activeClientIndexRef.current
+    const isForwardWrap = currentIndex === clientLogos.length - 1 && normalizedIndex === 0
+    const isBackwardWrap = currentIndex === 0 && normalizedIndex === clientLogos.length - 1
+    const cardIndex = isForwardWrap
+      ? clientLogos.length + 1
+      : isBackwardWrap
+        ? 0
+        : normalizedIndex + 1
+    const card = cards[cardIndex]
     if (!card) return
     const target = card.offsetLeft + card.offsetWidth / 2 - track.clientWidth / 2
-    track.scrollTo({ left: target, behavior: 'smooth' })
+    track.scrollTo({ left: target, behavior })
   }
 
   const scrollClients = (direction: 'previous' | 'next') => {
@@ -250,6 +267,8 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
   useEffect(() => {
     const track = clientTrackRef.current
     if (!track) return
+
+    scrollClientsToIndex(0, 'instant')
 
     const updateActiveIndex = () => {
       const cards = Array.from(track.querySelectorAll<HTMLElement>('.client-logo-card'))
@@ -265,8 +284,21 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
           closestIndex = index
         }
       })
-      activeClientIndexRef.current = closestIndex
-      setActiveClientIndex(closestIndex)
+      if (closestIndex === 0 || closestIndex === clientLogos.length + 1) {
+        const wrappedIndex = closestIndex === 0 ? clientLogos.length - 1 : 0
+        activeClientIndexRef.current = wrappedIndex
+        setActiveClientIndex(wrappedIndex)
+        const matchingCard = cards[wrappedIndex + 1]
+        if (matchingCard) {
+          track.scrollLeft =
+            matchingCard.offsetLeft + matchingCard.offsetWidth / 2 - track.clientWidth / 2
+        }
+        return
+      }
+
+      const logicalIndex = closestIndex - 1
+      activeClientIndexRef.current = logicalIndex
+      setActiveClientIndex(logicalIndex)
     }
 
     track.addEventListener('scroll', updateActiveIndex, { passive: true })
@@ -571,10 +603,11 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
               isClientHoveredRef.current = false
             }}
           >
-            {clientLogos.map((client, index) => (
+            {carouselClientLogos.map((client, index) => (
               <div
-                key={client.name}
-                className={`client-logo-card${index === activeClientIndex ? ' is-center' : ''}`}
+                key={`${client.name}-${index}`}
+                aria-hidden={index === 0 || index === clientLogos.length + 1}
+                className={`client-logo-card${index === activeClientIndex + 1 ? ' is-center' : ''}`}
               >
                 <img src={client.src} alt={`${client.name} logo`} />
               </div>

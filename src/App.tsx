@@ -1,5 +1,6 @@
 ﻿import { useEffect, useRef, useState, type ReactElement } from 'react'
 import {
+  AtSign,
   ChevronRight,
   ChevronUp,
   Mail,
@@ -65,19 +66,15 @@ const servicesSubPageMap: Record<string, ReactElement> = {
 }
 
 const footerSocialLinks = [
-  { label: 'Facebook', href: '#', icon: (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-      <path d="M14 9h3V6h-3c-2.8 0-4 1.4-4 4v2H7v3h3v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z" />
-    </svg>
-  ) },
-  { label: 'Instagram', href: '#', icon: (
+  { label: 'Instagram', href: 'https://www.instagram.com/finsys.tech/', icon: (
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
       <rect x="3" y="3" width="18" height="18" rx="5" />
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
     </svg>
   ) },
-  { label: 'LinkedIn', href: '#', icon: (
+  { label: 'Threads', href: 'https://www.threads.com/@finsys.tech', icon: <AtSign size={18} aria-hidden="true" /> },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/finsys-tech-solutions-limited', icon: (
     <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
       <path d="M6.5 8.5h3v9h-3v-9zm1.5-4.5a1.75 1.75 0 110 3.5 1.75 1.75 0 010-3.5zM10 8.5h2.9v1.2h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.6v4.76H16.5v-4.2c0-1-.02-2.3-1.4-2.3-1.44 0-1.66 1.12-1.66 2.28v4.22H10V8.5z" />
     </svg>
@@ -631,7 +628,7 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
               <p className="footer-heading footer-social-heading">Follow Us</p>
               <div className="footer-socials" aria-label="Social media links">
                 {footerSocialLinks.map((social) => (
-                  <a key={social.label} href={social.href} aria-label={social.label} className="footer-social-btn">
+                  <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="footer-social-btn">
                     {social.icon}
                   </a>
                 ))}
