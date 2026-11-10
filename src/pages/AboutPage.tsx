@@ -153,11 +153,36 @@ const coreValues = [
 ]
 
 const certificationImages = [
-  { image: cfaCertificationImage, alt: 'CFA certification' },
-  { image: cisspCertificationImage, alt: 'CISSP certification' },
-  { image: prince2CertificationImage, alt: 'PRINCE2 certification' },
-  { image: oracleCertificationImage, alt: 'Oracle certification' },
-  { image: togafCertificationImage, alt: 'TOGAF certification' },
+  {
+    image: cfaCertificationImage,
+    alt: 'CFA Institute mark',
+    name: 'CFA',
+    description: 'Investment analysis, portfolio management and financial decision-making.',
+  },
+  {
+    image: cisspCertificationImage,
+    alt: 'CISSP mark',
+    name: 'CISSP',
+    description: 'Advanced professional knowledge across information security practice.',
+  },
+  {
+    image: prince2CertificationImage,
+    alt: 'PRINCE2 mark',
+    name: 'PRINCE2',
+    description: 'Structured project management methods, governance and delivery control.',
+  },
+  {
+    image: oracleCertificationImage,
+    alt: 'Oracle mark',
+    name: 'Oracle',
+    description: 'Expertise spanning Oracle enterprise applications and database technologies.',
+  },
+  {
+    image: togafCertificationImage,
+    alt: 'TOGAF mark',
+    name: 'TOGAF',
+    description: 'Enterprise architecture methods for designing and governing transformation.',
+  },
 ]
 
 const aboutMetrics = [
@@ -247,7 +272,7 @@ function AboutPage() {
             Trusted technology and banking transformation advisors delivering practical outcomes across East Africa.
           </p>
           <div className="about-hero-actions">
-            <a className="primary-btn" href="#about-overview">Explore Our Story</a>
+            <a className="primary-btn" href="#about-overview">Explore Our Company</a>
             <a className="outline-accent" href="/contact">Talk to an Expert</a>
           </div>
         </div>
@@ -373,7 +398,10 @@ function AboutPage() {
       <section className="about-values-band" id="core-values">
         <div className="about-redesign-heading about-redesign-heading--centered">
           <p className="section-label">What We Stand For</p>
-          <h2>Values made visible in every engagement.</h2>
+          <h2>The principles behind every engagement.</h2>
+          <p>
+            These values guide how we work with clients, partners and one another.
+          </p>
         </div>
 
         <div className="about-values-grid">
@@ -391,25 +419,32 @@ function AboutPage() {
       </section>
 
       <section className="about-proof-band" id="team-certifications">
-        <div className="about-certification-heading">
-          <p className="section-label">Recognised enterprise capability</p>
-          <h2>Credentials that support confident delivery.</h2>
+        <div className="about-certification-summary">
+          <p className="section-label">Expertise You Can Trust</p>
+          <h3>Capability backed by experience.</h3>
+          <p>
+            Our team combines deep ICT infrastructure, banking technology, strategic
+            planning and transformation experience with recognised professional
+            certifications.
+          </p>
         </div>
         <div className="about-proof-intro">
           <div className="about-certifications-image-wrap">
             <img src={aboutTeamImage} alt="Modern team working around a conference table" />
           </div>
-          <div className="about-redesign-heading">
-            <p className="section-label">Expertise You Can Trust</p>
-            <h2>Capability backed by experience.</h2>
-            <p>Our team combines deep ICT infrastructure, banking technology, strategic planning and transformation experience with recognised professional certifications.</p>
+          <div className="about-certification-gallery" aria-label="Professional certifications">
+            {certificationImages.map((certificate) => (
+              <article
+                className={`about-certification-tile about-certification-tile--${certificate.name.toLowerCase()}`}
+                key={certificate.name}
+              >
+                <div className="about-certification-mark">
+                  <img src={certificate.image} alt={certificate.alt} />
+                </div>
+                <p>{certificate.description}</p>
+              </article>
+            ))}
           </div>
-        </div>
-
-        <div className="about-certification-gallery" aria-label="Professional certifications">
-          {certificationImages.map((certificate) => (
-            <img key={certificate.alt} src={certificate.image} alt={certificate.alt} />
-          ))}
         </div>
       </section>
 

@@ -13,6 +13,7 @@ import dataCenterIcon from '../assets/home-icons/data-center.png'
 import cyberSecurityIcon from '../assets/home-icons/cyber-security.png'
 import cloudDevIcon from '../assets/home-icons/cloud-dev.png'
 import crmIcon from '../assets/home-icons/crm.png'
+import trainingIcon from '../assets/home-icons/training and cert.png'
 import whyChoosePrimaryImage from '../assets/images/home/why choose us1.png'
 import whyChooseSecondaryImage from '../assets/images/home/why choose us2.jpg'
 import pillarAdvisoryImage from '../assets/images/services/strategic consulting.jpg'
@@ -22,6 +23,7 @@ import pillarCyberImage from '../assets/images/services/cyber.jpg'
 import pillarCRMImage from '../assets/images/services/crm.jpg'
 import pillarCloudImage from '../assets/images/services/software development.png'
 import pillarOracle from '../assets/images/services/oracle fusion.png' 
+import trainingHeroImage from '../assets/images/services/Coding Workshop in a Modern Classroom.png'
 import tcbLogo from '../assets/images/home/tcb-logo.png'
 import zictiaLogo from '../assets/images/home/zictia-logo.png'
 import tpcLogo from '../assets/images/home/TPC-logo.png'
@@ -29,6 +31,13 @@ import tasacLogo from '../assets/images/home/TASAC-logo.png'
 import nccLogo from '../assets/images/home/NCC-logo.png'
 import ttclLogo from '../assets/images/home/TTCL-logo.png'
 import taaLogo from '../assets/images/home/TAA-logo.png'
+import mictLogo from '../assets/images/home/MICT logo.png'
+import jmrLogo from '../assets/images/home/JMR Iogo.png'
+import jethroLogo from '../assets/images/home/JETHRO logo.png'
+import binaryLogo from '../assets/images/home/BINARY logo.png'
+import clcLogo from '../assets/images/home/CLC logo.png'
+import torqueItLogo from '../assets/images/home/torque-it_logo.png'
+import finsysLogo from '../assets/logos/Finsys Trch Logo-light mode.png'
 
 interface HomePageProps {
   theme: 'light' | 'dark'
@@ -79,6 +88,12 @@ const homePillars = [
     description: 'Oracle EBS and Fusion Cloud ERP advisory, rollout, and delivery assurance.',
     path: '/services/enterprise-erp-systems',
   },
+  {
+    image: trainingHeroImage,
+    heading: 'Professional ICT Training & Certification',
+    description: 'Build practical technology skills and pursue professional ICT certifications.',
+    path: '/services/professional-ict-training',
+  },
 ]
 
 const solutions = [
@@ -124,6 +139,12 @@ const solutions = [
     description: 'Digital lending platforms and CRM solutions for financial institutions.',
     path: '/services/digital-lending-crm-solutions',
   },
+  {
+    iconSrc: trainingIcon,
+    title: 'ICT training & certification',
+    description: 'Technical training and professional certification pathways for teams.',
+    path: '/services/professional-ict-training',
+  },
 ]
 
 const whyChoosePoints: {
@@ -161,12 +182,21 @@ const clientLogos = [
   { src: nccLogo, name: 'National Consumer Council' },
   { src: ttclLogo, name: 'TTCL' },
   { src: taaLogo, name: 'Tanzania Airports Authority' },
+  { src: mictLogo, name: 'Ministry of Information, Communication and Technology' },
 ]
 
 const carouselClientLogos = [
   clientLogos[clientLogos.length - 1],
   ...clientLogos,
   clientLogos[0],
+]
+
+const partners = [
+  { name: 'JMR Infotech', logo: jmrLogo },
+  { name: 'AHEAD / Jethro', logo: jethroLogo },
+  { name: 'Binary Limited', logo: binaryLogo },
+  { name: 'Computer Learning Centre (CLC)', logo: clcLogo },
+  { name: 'Torque IT', logo: torqueItLogo },
 ]
 
 function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
@@ -449,7 +479,7 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
                   onClick={(event) => onServiceNavigate(event, solution.path)}
                 >
                   <span className="solution-nav-icon">
-                    <img src={solution.iconSrc} alt="" aria-hidden="true" />
+                    {solution.iconSrc && <img src={solution.iconSrc} alt="" aria-hidden="true" />}
                   </span>
                   <span className="solution-nav-label">{solution.title}</span>
                   <span className="solution-nav-description">{solution.description}</span>
@@ -573,7 +603,7 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
 
     <section className="clients-carousel-section" id="track-record">
         <div className="section-heading" data-reveal-group>
-          <p className="section-label clients-carousel-eyebrow reveal-up">Our Clients & Partners</p>
+          <p className="section-label clients-carousel-eyebrow reveal-up">Our trusted clients</p>
           <h2 className="reveal-up">
           Our valued clientele across <span className="track-record-accent">East Africa</span>
           </h2>
@@ -622,6 +652,29 @@ function HomePage({ onExploreServices, onServiceNavigate }: HomePageProps) {
           >
             <span aria-hidden="true">&#8594;</span>
           </button>
+        </div>
+      </section>
+
+      <section className="partners-showcase-section">
+        <div className="partners-showcase-inner">
+          <div className="partners-showcase-copy" data-reveal-group>
+            <p className="section-label reveal-up">Partners & Training</p>
+            <h2 className="reveal-up">The right expertise, backed by trusted partners</h2>
+            <p className="reveal-up">
+              We collaborate with specialist technology partners in banking transformation, digital platforms and software integration, while our trusted training partners equip teams with practical ICT skills and globally recognised certifications in areas such as cybersecurity, cloud, data and project delivery.
+            </p>
+          </div>
+
+          <div className="partner-honeycomb reveal-up" role="group" aria-label="Finsys and its specialist and training partners">
+            <div className="partner-hex partner-hex--center">
+              <img src={finsysLogo} alt="Finsys Technology Solutions" />
+            </div>
+            {partners.map((partner) => (
+              <div className="partner-hex" key={partner.name}>
+                <img src={partner.logo} alt={`${partner.name} logo`} loading="lazy" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -11,6 +11,7 @@ import {
 import HomePage from './pages/HomePage'
 import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage'
+import PartnersPage from './pages/PartnersPage'
 import CoreBankingPage from './pages/Services/CoreBankingPage'
 import ErpSystemsPage from './pages/Services/ErpSystemsPage'
 import CrmPage from './pages/Services/CrmPage'
@@ -18,6 +19,7 @@ import IctAdvisoryPage from './pages/Services/IctAdvisoryPage'
 import DataCenterPage from './pages/Services/DataCenterPage'
 import CyberSecurity from './pages/Services/CyberSecurity'
 import CloudDevPage from './pages/Services/CloudDevPage'
+import ProfessionalTrainingPage from './pages/Services/ProfessionalTrainingPage'
 import logoLight from './assets/logos/Finsys Trch Logo-light mode.png'
 import logoDark from './assets/logos/Finsys Trch Logo-dark mode.png'
 import './App.css'
@@ -35,6 +37,31 @@ const serviceOptions = [
   { label: 'Data Centre & Network Infrastructure', slug: 'data-centre-network-infrastructure', path: '/services/data-centre-network-infrastructure' },
   { label: 'Cybersecurity, Risk & Compliance', slug: 'cybersecurity-risk-compliance', path: '/services/cybersecurity-risk-compliance' },
   { label: 'Cloud, DevOps & Modern Digital Solutions', slug: 'cloud-devops-modern-digital-solutions', path: '/services/cloud-devops-modern-digital-solutions' },
+  { label: 'Professional ICT Training & Certification', slug: 'professional-ict-training', path: '/services/professional-ict-training' },
+]
+
+const serviceMenuGroups = [
+  {
+    title: 'Banking & Enterprise',
+    options: serviceOptions.slice(0, 3),
+  },
+  {
+    title: 'Advisory & Infrastructure',
+    options: serviceOptions.slice(3, 5),
+  },
+  {
+    title: 'Security & Digital',
+    options: serviceOptions.slice(5, 7),
+  },
+  {
+    title: 'Training & Development',
+    options: serviceOptions.slice(7),
+  },
+]
+
+const aboutOptions = [
+  { label: 'Our Company', path: '/about' },
+  { label: 'Our Partners', path: '/about/partners' },
 ]
 
 const DEFAULT_SERVICE_PATH = serviceOptions[0].path
@@ -46,6 +73,7 @@ const footerSolutions = [
   { label: 'Data Centre & Infrastructure', path: '/services/data-centre-network-infrastructure' },
   { label: 'Cybersecurity & Compliance', path: '/services/cybersecurity-risk-compliance' },
   { label: 'Cloud, DevOps & Software', path: '/services/cloud-devops-modern-digital-solutions' },
+  { label: 'Professional ICT Training & Certification', path: '/services/professional-ict-training' },
 ]
 
 const footerExploreLinks = [
@@ -63,6 +91,7 @@ const servicesSubPageMap: Record<string, ReactElement> = {
   '/services/data-centre-network-infrastructure': <DataCenterPage />,
   '/services/cybersecurity-risk-compliance': <CyberSecurity />,
   '/services/cloud-devops-modern-digital-solutions': <CloudDevPage />,
+  '/services/professional-ict-training': <ProfessionalTrainingPage />,
 }
 
 const footerSocialLinks = [
@@ -102,7 +131,10 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false)
   const servicesRef = useRef<HTMLDivElement | null>(null)
+  const aboutRef = useRef<HTMLDivElement | null>(null)
   const [currentPath, setCurrentPath] = useState<string>(() => {
     if (typeof window === 'undefined') return '/'
     return window.location.pathname
@@ -154,15 +186,21 @@ function App() {
   }, [menuOpen])
 
   useEffect(() => {
-    if (!servicesOpen) return
+    if (!servicesOpen && !aboutOpen) return
 
     const handleClickOutside = (event: MouseEvent) => {
       if (servicesRef.current && !servicesRef.current.contains(event.target as Node)) {
         setServicesOpen(false)
       }
+      if (aboutRef.current && !aboutRef.current.contains(event.target as Node)) {
+        setAboutOpen(false)
+      }
     }
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setServicesOpen(false)
+      if (event.key === 'Escape') {
+        setServicesOpen(false)
+        setAboutOpen(false)
+      }
     }
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -171,7 +209,7 @@ function App() {
       document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('keydown', handleEscape)
     }
-  }, [servicesOpen])
+  }, [servicesOpen, aboutOpen])
 
   useEffect(() => {
     if (currentPath !== '/services') return
@@ -293,7 +331,7 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
 
   const isActiveLink = (link: string) => {
     if (link === 'Home') return currentPath === '/'
-    if (link === 'About') return currentPath === '/about'
+    if (link === 'About') return currentPath.startsWith('/about')
     if (link === 'Services') return currentPath.startsWith('/services')
     if (link === 'Contact') return currentPath === '/contact'
     return false
@@ -307,6 +345,12 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
     }
   }, [menuOpen, currentPath])
 
+  useEffect(() => {
+    if (menuOpen && currentPath.startsWith('/about')) {
+      setMobileAboutOpen(true)
+    }
+  }, [menuOpen, currentPath])
+
   //========on click animation
   const goTo = (path: string, hash?: string | null) => {
     if (path === currentPath && !hash) {
@@ -316,6 +360,8 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
     setMenuOpen(false)
     setServicesOpen(false)
     setMobileServicesOpen(false)
+    setAboutOpen(false)
+    setMobileAboutOpen(false)
     setTransitionPhase('covering')
     window.setTimeout(() => {
       if (!(path === '/' && hash)) {
@@ -336,6 +382,16 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     setServicesOpen(false)
     setMobileServicesOpen(false)
+    goTo(path)
+  }
+
+  const handleAboutOptionClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    path: string,
+  ) => {
+    event.preventDefault()
+    setAboutOpen(false)
+    setMobileAboutOpen(false)
     goTo(path)
   }
 
@@ -410,7 +466,45 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
 
         <nav className="site-nav" aria-label="Primary navigation">
           {navLinks.map((link) =>
-            link === 'Services' ? (
+            link === 'About' ? (
+              <div
+                className="nav-dropdown"
+                ref={aboutRef}
+                key={link}
+                onMouseEnter={() => setAboutOpen(true)}
+                onMouseLeave={() => setAboutOpen(false)}
+              >
+                <button
+                  type="button"
+                  className={`nav-dropdown-toggle${isActiveLink('About') ? ' active' : ''}${aboutOpen ? ' open' : ''}`}
+                  aria-haspopup="true"
+                  aria-expanded={aboutOpen}
+                  onClick={() => setAboutOpen(true)}
+                >
+                  About
+                  <svg className="nav-dropdown-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M7 10l5 5 5-5z" />
+                  </svg>
+                </button>
+                <div className={`nav-dropdown-menu nav-dropdown-menu--about${aboutOpen ? ' open' : ''}`} role="menu">
+                  <section className="nav-dropdown-group">
+                    <h2>About Finsys</h2>
+                    {aboutOptions.map((option) => (
+                      <a
+                        key={option.path}
+                        href={option.path}
+                        role="menuitem"
+                        className={currentPath === option.path ? 'active' : ''}
+                        aria-current={currentPath === option.path ? 'page' : undefined}
+                        onClick={(event) => handleAboutOptionClick(event, option.path)}
+                      >
+                        {option.label}
+                      </a>
+                    ))}
+                  </section>
+                </div>
+              </div>
+            ) : link === 'Services' ? (
               <div
                 className="nav-dropdown"
                 ref={servicesRef}
@@ -435,18 +529,23 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
                </svg>
                 </button>
 
-                <div className={`nav-dropdown-menu${servicesOpen ? ' open' : ''}`} role="menu">
-                  {serviceOptions.map((option) => (
-                    <a
-                      key={option.slug}
-                      href={option.path}
-                      role="menuitem"
-                      className={isActiveServicePath(option.path) ? 'active' : ''}
-                      aria-current={isActiveServicePath(option.path) ? 'page' : undefined}
-                      onClick={(event) => handleServiceOptionClick(event, option.path)}
-                    >
-                      {option.label}
-                    </a>
+                <div className={`nav-dropdown-menu nav-dropdown-menu--services${servicesOpen ? ' open' : ''}`} role="menu">
+                  {serviceMenuGroups.map((group) => (
+                    <section className="nav-dropdown-group" key={group.title}>
+                      <h2>{group.title}</h2>
+                      {group.options.map((option) => (
+                        <a
+                          key={option.slug}
+                          href={option.path}
+                          role="menuitem"
+                          className={isActiveServicePath(option.path) ? 'active' : ''}
+                          aria-current={isActiveServicePath(option.path) ? 'page' : undefined}
+                          onClick={(event) => handleServiceOptionClick(event, option.path)}
+                        >
+                          {option.label}
+                        </a>
+                      ))}
+                    </section>
                   ))}
                 </div>
               </div>
@@ -519,7 +618,37 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
 
           <nav className="mobile-nav">
           {navLinks.map((link) =>
-            link === 'Services' ? (
+            link === 'About' ? (
+              <div className="mobile-nav-dropdown" key={link}>
+                <button
+                  type="button"
+                  className={`mobile-nav-subtoggle${mobileAboutOpen ? ' open' : ''}${isActiveLink('About') ? ' active' : ''}`}
+                  aria-expanded={mobileAboutOpen}
+                  onClick={() => setMobileAboutOpen((open) => !open)}
+                >
+                  About
+                  <svg className="nav-dropdown-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M7 10l5 5 5-5z" />
+                  </svg>
+                </button>
+                {mobileAboutOpen && (
+                  <div className="mobile-nav-submenu">
+                    {aboutOptions.map((option) => (
+                      <a
+                        key={option.path}
+                        href={option.path}
+                        role="menuitem"
+                        className={currentPath === option.path ? 'active' : ''}
+                        aria-current={currentPath === option.path ? 'page' : undefined}
+                        onClick={(event) => handleAboutOptionClick(event, option.path)}
+                      >
+                        {option.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : link === 'Services' ? (
               <div className="mobile-nav-dropdown" key={link}>
                 <button
                   type="button"
@@ -587,7 +716,11 @@ const handleNavigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
         </nav>
       </aside>
 
-      {currentPath === '/about' ? (
+      {currentPath === '/about/partners' ? (
+        <div key={currentPath} className="route-page-fade">
+          <PartnersPage />
+        </div>
+      ) : currentPath === '/about' ? (
         <div key={currentPath} className="route-page-fade">
           <AboutPage />
         </div>
