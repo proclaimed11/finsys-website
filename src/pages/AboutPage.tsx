@@ -15,6 +15,12 @@ import iconAccess from '../assets/services-icons/access.png'
 import iconDesign from '../assets/services-icons/design.png'
 import iconImplement from '../assets/services-icons/implement.png'
 import iconDeliver from '../assets/services-icons/deliver.png'
+import integrityIcon from '../assets/aboutUs-icons/integrity_icon.png'
+import innovationIcon from '../assets/aboutUs-icons/innovation_icon.png'
+import excellenceIcon from '../assets/aboutUs-icons/excellence_icon.png'
+import collaborationIcon from '../assets/aboutUs-icons/collabo_icon.png'
+import customerFocusIcon from '../assets/aboutUs-icons/customer_focus_icon.png'
+import sustainabilityIcon from '../assets/aboutUs-icons/sustainability_icon.png'
 import {
   Compass,
   Eye,
@@ -100,6 +106,7 @@ const coreValues = [
     number: '01',
     title: 'Integrity',
     description: 'Ethical behaviour and trusted advice',
+    icon: integrityIcon,
     tone: 'purple',
     position: 'top-left',
   },
@@ -107,6 +114,7 @@ const coreValues = [
     number: '02',
     title: 'Innovation',
     description: 'Creative solutions for evolving needs',
+    icon: innovationIcon,
     tone: 'green',
     position: 'top-center',
   },
@@ -114,6 +122,7 @@ const coreValues = [
     number: '03',
     title: 'Excellence',
     description: 'Superior quality in every project',
+    icon: excellenceIcon,
     tone: 'purple',
     position: 'top-right',
   },
@@ -121,6 +130,7 @@ const coreValues = [
     number: '04',
     title: 'Collaboration',
     description: 'Teamwork and strategic partnerships',
+    icon: collaborationIcon,
     tone: 'green',
     position: 'bottom-left',
   },
@@ -128,6 +138,7 @@ const coreValues = [
     number: '05',
     title: 'Customer Focus',
     description: 'Dedicated to client success',
+    icon: customerFocusIcon,
     tone: 'purple',
     position: 'bottom-center',
   },
@@ -135,6 +146,7 @@ const coreValues = [
     number: '06',
     title: 'Sustainability',
     description: 'Economic, social and environmental well-being',
+    icon: sustainabilityIcon,
     tone: 'green',
     position: 'bottom-right',
   },
@@ -367,7 +379,10 @@ function AboutPage() {
         <div className="about-values-grid">
           {coreValues.map((value) => (
             <article key={value.number} className="about-value-tile">
-              <span>{value.number}</span>
+              <div className="about-value-topline">
+                <span>{value.number}</span>
+                <img className="about-value-icon" src={value.icon} alt="" aria-hidden="true" />
+              </div>
               <h3>{value.title}</h3>
               <p>{value.description}</p>
             </article>

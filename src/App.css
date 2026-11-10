@@ -3530,9 +3530,12 @@ section[id] {
   letter-spacing: var(--major-heading-letter-spacing);
 }
 
-.about-values-band .about-redesign-heading h2,
-.about-values-band .about-redesign-heading .section-label {
+.about-values-band .about-redesign-heading h2 {
   color: #ffffff;
+}
+
+.about-values-band .about-redesign-heading .section-label {
+  color: var(--accent);
 }
 
 .about-redesign-heading > p,
@@ -3822,15 +3825,27 @@ section[id] {
   background: #24552f;
 }
 
-.about-value-tile span {
+.about-value-topline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.about-value-topline span {
   color: #8af2a7;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
 }
 
+.about-value-icon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
 .about-value-tile h3 {
-  margin: 22px 0 7px;
+  margin: 12px 0 7px;
   color: #ffffff;
   font-size: 1.05rem;
 }
