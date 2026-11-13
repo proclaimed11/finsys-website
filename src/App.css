@@ -6729,28 +6729,30 @@ section[id] {
 .partners-page-hero-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 30px;
+  gap: 14px;
+  margin-top: 4px;
 }
 
 .partners-page-hero-links a {
   display: inline-flex;
   align-items: center;
-  min-height: 46px;
-  padding: 0 18px;
+  min-height: 50px;
+  padding: 13px 22px;
   border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 999px;
+  border-radius: 8px;
+  background: rgba(4, 20, 13, 0.18);
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 0.94rem;
   font-weight: 600;
-  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
 }
 
 .partners-page-hero-links a:hover,
 .partners-page-hero-links a:focus-visible {
-  border-color: #a7e879;
-  background: #a7e879;
-  color: #17351a;
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transform: translateY(-2px);
   outline: none;
 }
 
