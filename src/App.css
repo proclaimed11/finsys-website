@@ -3481,10 +3481,10 @@ section[id] {
 .about-certification-tile:last-child {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 90px minmax(0, 1fr);
-  column-gap: 16px;
-  align-items: center;
-  text-align: left;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  row-gap: 16px;
+  text-align: center;
 }
 
 .about-certification-tile:last-child .about-certification-mark {
@@ -3492,7 +3492,7 @@ section[id] {
 }
 
 .about-certification-tile:last-child p {
-  grid-column: 2;
+  grid-column: auto;
 }
 
 .about-certification-mark {
